@@ -1,6 +1,6 @@
 /**
  * Main Game Module
- * Game类，Game Loop(requestAnimationFrame)，状态管理，Wave Control
+ * GameClass，Game Loop(requestAnimationFrame)，，Wave Control
  */
 
 import { GameMap } from './map.js';
@@ -10,7 +10,7 @@ import { Projectile, Explosion } from './projectile.js';
 import { distance } from './utils.js';
 
 /**
- * Game State枚举
+ * Game StateEnum
  */
 export const GameState = {
     MENU: 'menu',
@@ -61,7 +61,7 @@ export class Game {
         this.lastTime = 0;
         this.animationId = null;
 
-        // 初始化
+        // Initialize
         this.init();
     }
 
@@ -69,20 +69,20 @@ export class Game {
      * Initialize Game
      */
     init() {
-        // 设置画布大小
+        // Set Canvas Size
         this.resize();
 
-        // 创建地图
+        // Create Map
         this.map = new GameMap(this.canvas.width, this.canvas.height);
 
-        // 设置默认路径
+        // Set Default Path
         const pathPoints = this.generatePath();
         this.map.setPath(pathPoints);
 
         // Bind Events
         this.bindEvents();
 
-        // 开始Game Loop
+        // Start Game Loop
         this.start();
     }
 
@@ -173,7 +173,7 @@ export class Game {
     }
 
     /**
-     * 尝试Build Tower
+     * Try Build Tower
      */
     tryBuildTower(x, y) {
         const cell = this.map.getCellAt(x, y);
@@ -354,13 +354,13 @@ export class Game {
      * Restart
      */
     restart() {
-        // 重置Game Data
+        // Reset Game Data
         this.money = 500;
         this.lives = 20;
         this.wave = 1;
         this.score = 0;
 
-        // 清空Game Objects
+        // Clear Game Objects
         this.towers = [];
         this.zombies = [];
         this.projectiles = [];

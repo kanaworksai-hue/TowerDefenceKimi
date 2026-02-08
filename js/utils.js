@@ -1,15 +1,15 @@
 /**
- * 工具函数模块
- * 包含Math Calculations、Collision Detection等通用功能
+ * 
+ * Math Calculations、Collision Detection
  */
 
 /**
- * 计算两点之间的距离
- * @param {number} x1 - 点1的x坐标
- * @param {number} y1 - 点1的y坐标
- * @param {number} x2 - 点2的x坐标
- * @param {number} y2 - 点2的y坐标
- * @returns {number} 两点之间的距离
+ * 
+ * @param {number} x1 - 1x
+ * @param {number} y1 - 1y
+ * @param {number} x2 - 2x
+ * @param {number} y2 - 2y
+ * @returns {number} 
  */
 export function distance(x1, y1, x2, y2) {
     const dx = x2 - x1;
@@ -18,12 +18,12 @@ export function distance(x1, y1, x2, y2) {
 }
 
 /**
- * 计算两点之间的距离平方（用于性能优化，避免开方运算）
- * @param {number} x1 - 点1的x坐标
- * @param {number} y1 - 点1的y坐标
- * @param {number} x2 - 点2的x坐标
- * @param {number} y2 - 点2的y坐标
- * @returns {number} 两点之间的距离平方
+ * （，）
+ * @param {number} x1 - 1x
+ * @param {number} y1 - 1y
+ * @param {number} x2 - 2x
+ * @param {number} y2 - 2y
+ * @returns {number} 
  */
 export function distanceSquared(x1, y1, x2, y2) {
     const dx = x2 - x1;
@@ -32,14 +32,14 @@ export function distanceSquared(x1, y1, x2, y2) {
 }
 
 /**
- * 检测两个圆形是否碰撞
- * @param {number} x1 - 圆1的x坐标
- * @param {number} y1 - 圆1的y坐标
- * @param {number} r1 - 圆1的半径
- * @param {number} x2 - 圆2的x坐标
- * @param {number} y2 - 圆2的y坐标
- * @param {number} r2 - 圆2的半径
- * @returns {boolean} 是否碰撞
+ * 
+ * @param {number} x1 - 1x
+ * @param {number} y1 - 1y
+ * @param {number} r1 - 1
+ * @param {number} x2 - 2x
+ * @param {number} y2 - 2y
+ * @param {number} r2 - 2
+ * @returns {boolean} 
  */
 export function circleCollision(x1, y1, r1, x2, y2, r2) {
     const distSq = distanceSquared(x1, y1, x2, y2);
@@ -48,64 +48,64 @@ export function circleCollision(x1, y1, r1, x2, y2, r2) {
 }
 
 /**
- * 检测点是否在圆内
- * @param {number} px - 点的x坐标
- * @param {number} py - 点的y坐标
- * @param {number} cx - 圆心的x坐标
- * @param {number} cy - 圆心的y坐标
- * @param {number} r - 圆的半径
- * @returns {boolean} 点是否在圆内
+ * 
+ * @param {number} px - x
+ * @param {number} py - y
+ * @param {number} cx - x
+ * @param {number} cy - y
+ * @param {number} r - 
+ * @returns {boolean} 
  */
 export function pointInCircle(px, py, cx, cy, r) {
     return distanceSquared(px, py, cx, cy) <= r * r;
 }
 
 /**
- * 检测点是否在矩形内
- * @param {number} px - 点的x坐标
- * @param {number} py - 点的y坐标
- * @param {number} rx - 矩形左上角的x坐标
- * @param {number} ry - 矩形左上角的y坐标
- * @param {number} rw - 矩形的宽度
- * @param {number} rh - 矩形的高度
- * @returns {boolean} 点是否在矩形内
+ * 
+ * @param {number} px - x
+ * @param {number} py - y
+ * @param {number} rx - x
+ * @param {number} ry - y
+ * @param {number} rw - 
+ * @param {number} rh - 
+ * @returns {boolean} 
  */
 export function pointInRect(px, py, rx, ry, rw, rh) {
     return px >= rx && px <= rx + rw && py >= ry && py <= ry + rh;
 }
 
 /**
- * 检测两个矩形是否碰撞
- * @param {number} x1 - 矩形1的x坐标
- * @param {number} y1 - 矩形1的y坐标
- * @param {number} w1 - 矩形1的宽度
- * @param {number} h1 - 矩形1的高度
- * @param {number} x2 - 矩形2的x坐标
- * @param {number} y2 - 矩形2的y坐标
- * @param {number} w2 - 矩形2的宽度
- * @param {number} h2 - 矩形2的高度
- * @returns {boolean} 是否碰撞
+ * 
+ * @param {number} x1 - 1x
+ * @param {number} y1 - 1y
+ * @param {number} w1 - 1
+ * @param {number} h1 - 1
+ * @param {number} x2 - 2x
+ * @param {number} y2 - 2y
+ * @param {number} w2 - 2
+ * @param {number} h2 - 2
+ * @returns {boolean} 
  */
 export function rectCollision(x1, y1, w1, h1, x2, y2, w2, h2) {
     return x1 < x2 + w2 && x1 + w1 > x2 && y1 < y2 + h2 && y1 + h1 > y2;
 }
 
 /**
- * 计算两点之间的角度
- * @param {number} x1 - 起点x坐标
- * @param {number} y1 - 起点y坐标
- * @param {number} x2 - 终点x坐标
- * @param {number} y2 - 终点y坐标
- * @returns {number} 角度（弧度）
+ * 
+ * @param {number} x1 - x
+ * @param {number} y1 - y
+ * @param {number} x2 - x
+ * @param {number} y2 - y
+ * @returns {number} （）
  */
 export function angle(x1, y1, x2, y2) {
     return Math.atan2(y2 - y1, x2 - x1);
 }
 
 /**
- * 将角度限制在0到2π之间
- * @param {number} rad - 弧度值
- * @returns {number} 规范化后的弧度值
+ * 02π
+ * @param {number} rad - 
+ * @returns {number} 
  */
 export function normalizeAngle(rad) {
     while (rad < 0) rad += Math.PI * 2;
@@ -115,22 +115,22 @@ export function normalizeAngle(rad) {
 
 /**
  * Linear Interpolation
- * @param {number} start - 起始值
- * @param {number} end - 结束值
- * @param {number} t - 插值因子(0-1)
- * @returns {number} 插值结果
+ * @param {number} start - 
+ * @param {number} end - 
+ * @param {number} t - (0-1)
+ * @returns {number} 
  */
 export function lerp(start, end, t) {
     return start + (end - start) * t;
 }
 
 /**
- * 获取两点之间的方向向量
- * @param {number} x1 - 起点x坐标
- * @param {number} y1 - 起点y坐标
- * @param {number} x2 - 终点x坐标
- * @param {number} y2 - 终点y坐标
- * @returns {Object} 单位向量 {x, y}
+ * 
+ * @param {number} x1 - x
+ * @param {number} y1 - y
+ * @param {number} x2 - x
+ * @param {number} y2 - y
+ * @returns {Object}  {x, y}
  */
 export function direction(x1, y1, x2, y2) {
     const dist = distance(x1, y1, x2, y2);
@@ -142,40 +142,40 @@ export function direction(x1, y1, x2, y2) {
 }
 
 /**
- * 生成随机整数
- * @param {number} min - 最小值（包含）
- * @param {number} max - 最大值（包含）
- * @returns {number} 随机整数
+ * 
+ * @param {number} min - （）
+ * @param {number} max - （）
+ * @returns {number} 
  */
 export function randomInt(min, max) {
     return Math.floor(Math.random() * (max - min + 1)) + min;
 }
 
 /**
- * 生成随机浮点数
- * @param {number} min - 最小值
- * @param {number} max - 最大值
- * @returns {number} 随机浮点数
+ * 
+ * @param {number} min - 
+ * @param {number} max - 
+ * @returns {number} 
  */
 export function randomFloat(min, max) {
     return Math.random() * (max - min) + min;
 }
 
 /**
- * 限制数值在范围内
- * @param {number} value - 要限制的值
- * @param {number} min - 最小值
- * @param {number} max - 最大值
- * @returns {number} 限制后的值
+ * 
+ * @param {number} value - 
+ * @param {number} min - 
+ * @param {number} max - 
+ * @returns {number} 
  */
 export function clamp(value, min, max) {
     return Math.max(min, Math.min(max, value));
 }
 
 /**
- * 格式化数字显示
- * @param {number} num - 数字
- * @returns {string} 格式化后的字符串
+ * 
+ * @param {number} num - 
+ * @returns {string} 
  */
 export function formatNumber(num) {
     if (num >= 1000000) {
@@ -188,13 +188,13 @@ export function formatNumber(num) {
 }
 
 /**
- * Color Utils函数
+ * Color Utils
  */
 export const ColorUtils = {
     /**
-     * 将十六进制颜色转换为RGB对象
-     * @param {string} hex - 十六进制颜色值
-     * @returns {Object} RGB对象 {r, g, b}
+     * RGB
+     * @param {string} hex - 
+     * @returns {Object} RGB {r, g, b}
      */
     hexToRgb(hex) {
         const result = /^#?([a-f\d]{2})([a-f\d]{2})([a-f\d]{2})$/i.exec(hex);
@@ -206,22 +206,22 @@ export const ColorUtils = {
     },
 
     /**
-     * 将RGB值转换为十六进制颜色
-     * @param {number} r - 红色值(0-255)
-     * @param {number} g - 绿色值(0-255)
-     * @param {number} b - 蓝色值(0-255)
-     * @returns {string} 十六进制颜色值
+     * RGB
+     * @param {number} r - (0-255)
+     * @param {number} g - (0-255)
+     * @param {number} b - (0-255)
+     * @returns {string} 
      */
     rgbToHex(r, g, b) {
         return "#" + ((1 << 24) + (r << 16) + (g << 8) + b).toString(16).slice(1);
     },
 
     /**
-     * 混合两种颜色
-     * @param {string} color1 - 第一种颜色(十六进制)
-     * @param {string} color2 - 第二种颜色(十六进制)
-     * @param {number} ratio - 混合比例(0-1)
-     * @returns {string} 混合后的颜色
+     * 
+     * @param {string} color1 - ()
+     * @param {string} color2 - ()
+     * @param {number} ratio - (0-1)
+     * @returns {string} 
      */
     mix(color1, color2, ratio) {
         const c1 = this.hexToRgb(color1);
@@ -251,7 +251,7 @@ export const Easing = {
 };
 
 /**
- * 简单的Timer Class
+ * Timer Class
  */
 export class Timer {
     constructor(duration, callback, repeat = false) {
@@ -291,7 +291,7 @@ export class Timer {
 }
 
 /**
- * Object Pool类，用于优化性能
+ * Object PoolClass，
  */
 export class ObjectPool {
     constructor(factory, resetFn, initialSize = 10) {

@@ -13,7 +13,7 @@ class GameApp {
         this.canvas = document.getElementById('gameCanvas');
         this.game = null;
 
-        // UI元素
+        // UI Elements
         this.ui = {
             lives: document.getElementById('lives'),
             money: document.getElementById('money'),
@@ -37,7 +37,7 @@ class GameApp {
             restartBtn: document.getElementById('restart-btn')
         };
 
-        // 游戏速度选项
+        // Game Speed Options
         this.speedOptions = [1, 1.5, 2];
         this.currentSpeedIndex = 0;
 
@@ -48,78 +48,78 @@ class GameApp {
      * Initialize Application
      */
     init() {
-        // 创建游戏实例
+        // Create Game Instance
         this.game = new Game(this.canvas);
 
-        // 绑定游戏事件回调
+        // Bind Game Event Callbacks
         this.bindGameCallbacks();
 
         // Bind UI Events
         this.bindUIEvents();
 
-        // 初始化UI状态
+        // Initialize UI State
         this.updateUI();
     }
 
     /**
-     * 绑定游戏回调
+     * Bind Game Callbacks
      */
     bindGameCallbacks() {
-        // 金钱变化
+        // Money Changed
         this.game.onMoneyChanged = (money) => {
             this.ui.money.textContent = money;
             this.updateTowerButtons();
         };
 
-        // 生命值变化
+        // Lives Changed
         this.game.onLivesChanged = (lives) => {
             this.ui.lives.textContent = lives;
         };
 
-        // 波次变化
+        // Wave Changed
         this.game.onWaveChanged = (wave) => {
             this.ui.wave.textContent = wave;
         };
 
-        // 分数变化
+        // Score Changed
         this.game.onScoreChanged = (score) => {
             this.ui.score.textContent = score;
         };
 
-        // 防御塔选中
+        // Tower Selected
         this.game.onTowerSelected = (tower) => {
             this.showUpgradePanel(tower);
         };
 
-        // 防御塔取消选中
+        // Tower Deselected
         this.game.onTowerDeselected = () => {
             this.hideUpgradePanel();
         };
 
-        // 防御塔建造
+        // Tower Built
         this.game.onTowerBuilt = () => {
             this.updateTowerButtons();
         };
 
-        // 防御塔升级
+        // Tower Upgraded
         this.game.onTowerUpgraded = (tower) => {
             this.showUpgradePanel(tower);
             this.updateTowerButtons();
         };
 
-        // 波次开始
+        // Wave Started
         this.game.onWaveStarted = () => {
             this.ui.startWaveBtn.disabled = true;
-            this.ui.startWaveBtn.textContent = '波次进行中...';
+            this.ui.startWaveBtn.textContent = 'Wave In Progress...';
         };
 
-        // 波次完成
+        // Wave Completed
         this.game.onWaveCompleted = () => {
             this.ui.startWaveBtn.disabled = false;
-            this.ui.startWaveBtn.textContent = '开始波次';
+            this.ui.startWaveBtn.textContent = 'Start Wave';
         };
 
-        // 游戏结束
+        // Game Over
         this.game.onGameOver = (score, wave) => {
             this.ui.finalScore.textContent = score;
             this.ui.finalWave.textContent = wave;
@@ -131,7 +131,7 @@ class GameApp {
      * Bind UI Events
      */
     bindUIEvents() {
-        // 防御塔选择按钮
+        // Tower Selection Buttons
         this.ui.towerButtons.forEach(btn => {
             btn.addEventListener('click', () => {
                 const type = btn.dataset.type;
@@ -144,13 +144,13 @@ class GameApp {
             this.game.startWave();
         });
 
-        // 暂停按钮
+        // Pause Button
         this.ui.pauseBtn.addEventListener('click', () => {
             const state = this.game.togglePause();
-            this.ui.pauseBtn.textContent = state === GameState.PAUSED ? '继续' : '暂停';
+            this.ui.pauseBtn.textContent = state === GameState.PAUSED ? 'Resume' : 'Pause';
         });
 
-        // 速度按钮
+        // Speed Button
         this.ui.speedBtn.addEventListener('click', () => {
             this.currentSpeedIndex = (this.currentSpeedIndex + 1) % this.speedOptions.length;
             const speed = this.speedOptions[this.currentSpeedIndex];
@@ -158,7 +158,7 @@ class GameApp {
             this.ui.speedBtn.textContent = speed + 'x';
         });
 
-        // 升级按钮
+        // Upgrade Button
         this.ui.upgradeBtn.addEventListener('click', () => {
             if (this.game.selectedTower) {
                 const result = this.game.upgradeTower(this.game.selectedTower);
@@ -168,30 +168,30 @@ class GameApp {
             }
         });
 
-        // 出售按钮
+        // Sell Button
         this.ui.sellBtn.addEventListener('click', () => {
             if (this.game.selectedTower) {
                 this.game.sellTower(this.game.selectedTower);
             }
         });
 
-        // Close Upgrade Panel按钮
+        // Close Upgrade Panel Button
         this.ui.closeUpgradeBtn.addEventListener('click', () => {
             this.game.selectedTower = null;
             this.hideUpgradePanel();
         });
 
-        // 重新开始按钮
+        // Restart Button
         this.ui.restartBtn.addEventListener('click', () => {
             this.ui.gameOverModal.classList.add('hidden');
             this.game.restart();
             this.ui.startWaveBtn.disabled = false;
-            this.ui.startWaveBtn.textContent = '开始波次';
-            this.ui.pauseBtn.textContent = '暂停';
+            this.ui.startWaveBtn.textContent = 'Start Wave';
+            this.ui.pauseBtn.textContent = 'Pause';
             this.updateUI();
         });
 
-        // 键盘快捷键
+        // Keyboard Shortcuts
         document.addEventListener('keydown', (e) => {
             switch (e.key) {
                 case 'Escape':
@@ -214,32 +214,32 @@ class GameApp {
     }
 
     /**
-     * 选择防御塔类型
+     * Select Tower Type
      */
     selectTowerType(type, btn) {
-        // 清除之前的选择
+        // Clear Previous Selection
         this.clearTowerSelection();
 
-        // 如果点击的是已选中的，则取消选择
+        // If Clicking Already Selected, Deselect
         if (this.game.selectedTowerType === type) {
             this.game.selectTowerType(null);
             return;
         }
 
-        // 检查金币是否足够
+        // Check If Enough Money
         const towerInfo = this.game.getTowerInfo?.(type) || { cost: 100 };
         if (this.game.money < towerInfo.cost) {
-            alert('金币不足！');
+            alert('Insufficient Gold!');
             return;
         }
 
-        // 选中新类型
+        // Select New Type
         this.game.selectTowerType(type);
         btn.classList.add('selected');
     }
 
     /**
-     * 清除防御塔选择
+     * Clear Tower Selection
      */
     clearTowerSelection() {
         this.ui.towerButtons.forEach(btn => {
@@ -277,7 +277,7 @@ class GameApp {
     }
 
     /**
-     * 更新防御塔按钮状态
+     * Update Tower Buttons State
      */
     updateTowerButtons() {
         this.ui.towerButtons.forEach(btn => {
@@ -293,7 +293,7 @@ class GameApp {
     }
 
     /**
-     * 更新UI
+     * Update UI
      */
     updateUI() {
         this.ui.lives.textContent = this.game.lives;
@@ -304,7 +304,7 @@ class GameApp {
     }
 }
 
-// 启动游戏
+// Start Game
 document.addEventListener('DOMContentLoaded', () => {
     new GameApp();
 });

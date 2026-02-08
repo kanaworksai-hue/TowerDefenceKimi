@@ -1,11 +1,11 @@
 /**
  * Map Module
- * 负责Grid System、Path Management和可建造区域判断
+ * Grid System、Path Management
  */
 
 /**
  * Map Class
- * 管理游戏地图的所有信息
+ * 
  */
 export class GameMap {
     constructor(width, height, tileSize = 40) {
@@ -31,23 +31,23 @@ export class GameMap {
             }
         }
 
-        // 路径点数组
+        // 
         this.path = [];
-        // Start和End
+        // StartEnd
         this.startPoint = null;
         this.endPoint = null;
     }
 
     /**
      * Set Path
-     * @param {Array} pathPoints - 路径点数组 [{x, y}, ...]
+     * @param {Array} pathPoints -  [{x, y}, ...]
      */
     setPath(pathPoints) {
         this.path = pathPoints;
         this.startPoint = pathPoints[0];
         this.endPoint = pathPoints[pathPoints.length - 1];
 
-        // 标记路径上的网格
+        // 
         for (let i = 0; i < pathPoints.length - 1; i++) {
             const start = pathPoints[i];
             const end = pathPoints[i + 1];
@@ -56,7 +56,7 @@ export class GameMap {
     }
 
     /**
-     * 标记路径线段经过的网格
+     * 
      * @param {Object} start - Start {x, y}
      * @param {Object} end - End {x, y}
      */
@@ -66,7 +66,7 @@ export class GameMap {
         const endCol = Math.floor(end.x / this.tileSize);
         const endRow = Math.floor(end.y / this.tileSize);
 
-        // 使用Bresenham算法标记路径
+        // Bresenham
         const dx = Math.abs(endCol - startCol);
         const dy = Math.abs(endRow - startRow);
         const sx = startCol < endCol ? 1 : -1;
@@ -96,10 +96,10 @@ export class GameMap {
     }
 
     /**
-     * 获取网格单元格
-     * @param {number} col - 列索引
-     * @param {number} row - 行索引
-     * @returns {Object|null} 网格单元格
+     * 
+     * @param {number} col - 
+     * @param {number} row - 
+     * @returns {Object|null} 
      */
     getCell(col, row) {
         if (row >= 0 && row < this.rows && col >= 0 && col < this.cols) {
@@ -109,10 +109,10 @@ export class GameMap {
     }
 
     /**
-     * 根据像素坐标获取网格单元格
-     * @param {number} x - x坐标
-     * @param {number} y - y坐标
-     * @returns {Object|null} 网格单元格
+     * 
+     * @param {number} x - x
+     * @param {number} y - y
+     * @returns {Object|null} 
      */
     getCellAt(x, y) {
         const col = Math.floor(x / this.tileSize);
@@ -121,10 +121,10 @@ export class GameMap {
     }
 
     /**
-     * 检查位置是否可以建造
-     * @param {number} col - 列索引
-     * @param {number} row - 行索引
-     * @returns {boolean} 是否可以建造
+     * 
+     * @param {number} col - 
+     * @param {number} row - 
+     * @returns {boolean} 
      */
     canBuild(col, row) {
         const cell = this.getCell(col, row);
@@ -132,10 +132,10 @@ export class GameMap {
     }
 
     /**
-     * 检查像素坐标位置是否可以建造
-     * @param {number} x - x坐标
-     * @param {number} y - y坐标
-     * @returns {boolean} 是否可以建造
+     * 
+     * @param {number} x - x
+     * @param {number} y - y
+     * @returns {boolean} 
      */
     canBuildAt(x, y) {
         const cell = this.getCellAt(x, y);
@@ -143,11 +143,11 @@ export class GameMap {
     }
 
     /**
-     * 在指定位置Place Tower
-     * @param {number} col - 列索引
-     * @param {number} row - 行索引
-     * @param {Tower} tower - 防御塔实例
-     * @returns {boolean} 是否放置成功
+     * Place Tower
+     * @param {number} col - 
+     * @param {number} row - 
+     * @param {Tower} tower - 
+     * @returns {boolean} 
      */
     placeTower(col, row, tower) {
         const cell = this.getCell(col, row);
@@ -160,10 +160,10 @@ export class GameMap {
     }
 
     /**
-     * 移除指定位置的防御塔
-     * @param {number} col - 列索引
-     * @param {number} row - 行索引
-     * @returns {boolean} 是否移除成功
+     * 
+     * @param {number} col - 
+     * @param {number} row - 
+     * @returns {boolean} 
      */
     removeTower(col, row) {
         const cell = this.getCell(col, row);
@@ -176,10 +176,10 @@ export class GameMap {
     }
 
     /**
-     * 获取指定位置的防御塔
-     * @param {number} x - x坐标
-     * @param {number} y - y坐标
-     * @returns {Tower|null} 防御塔实例
+     * 
+     * @param {number} x - x
+     * @param {number} y - y
+     * @returns {Tower|null} 
      */
     getTowerAt(x, y) {
         const cell = this.getCellAt(x, y);
@@ -187,9 +187,9 @@ export class GameMap {
     }
 
     /**
-     * 获取路径上的下一个点
-     * @param {number} currentIndex - 当前路径点索引
-     * @returns {Object|null} 下一个路径点
+     * 
+     * @param {number} currentIndex - 
+     * @returns {Object|null} 
      */
     getNextPathPoint(currentIndex) {
         if (currentIndex + 1 < this.path.length) {
@@ -202,9 +202,9 @@ export class GameMap {
     }
 
     /**
-     * 获取路径上的指定点
-     * @param {number} index - 路径点索引
-     * @returns {Object|null} 路径点
+     * 
+     * @param {number} index - 
+     * @returns {Object|null} 
      */
     getPathPoint(index) {
         if (index >= 0 && index < this.path.length) {
@@ -214,19 +214,19 @@ export class GameMap {
     }
 
     /**
-     * 获取路径总长度
-     * @returns {number} 路径点数
+     * 
+     * @returns {number} 
      */
     getPathLength() {
         return this.path.length;
     }
 
     /**
-     * 绘制地图
-     * @param {CanvasRenderingContext2D} ctx - Canvas上下文
+     * Draw Map
+     * @param {CanvasRenderingContext2D} ctx - Canvas
      */
     render(ctx) {
-        // Draw Grid背景
+        // Draw Grid
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
         ctx.lineWidth = 1;
 
@@ -258,7 +258,7 @@ export class GameMap {
             }
             ctx.stroke();
 
-            // Draw Path边框
+            // Draw Path
             ctx.strokeStyle = '#654321';
             ctx.lineWidth = this.tileSize * 0.7;
             ctx.globalCompositeOperation = 'destination-over';
@@ -271,23 +271,23 @@ export class GameMap {
             ctx.globalCompositeOperation = 'source-over';
         }
 
-        // 绘制Start
+        // Start
         if (this.startPoint) {
             this.drawPoint(ctx, this.startPoint, '#00ff00', 'Start');
         }
 
-        // 绘制End
+        // End
         if (this.endPoint) {
             this.drawPoint(ctx, this.endPoint, '#ff0000', 'End');
         }
     }
 
     /**
-     * Draw Path点标记
-     * @param {CanvasRenderingContext2D} ctx - Canvas上下文
-     * @param {Object} point - 点坐标
-     * @param {string} color - 颜色
-     * @param {string} label - 标签
+     * Draw Path
+     * @param {CanvasRenderingContext2D} ctx - Canvas
+     * @param {Object} point - 
+     * @param {string} color - 
+     * @param {string} label - 
      */
     drawPoint(ctx, point, color, label) {
         const size = this.tileSize * 0.8;
@@ -309,11 +309,11 @@ export class GameMap {
     }
 
     /**
-     * 绘制可建造区域高亮
-     * @param {CanvasRenderingContext2D} ctx - Canvas上下文
-     * @param {number} mouseX - 鼠标x坐标
-     * @param {number} mouseY - 鼠标y坐标
-     * @param {boolean} canBuild - 是否可以建造
+     * 
+     * @param {CanvasRenderingContext2D} ctx - Canvas
+     * @param {number} mouseX - x
+     * @param {number} mouseY - y
+     * @param {boolean} canBuild - 
      */
     renderBuildHighlight(ctx, mouseX, mouseY, canBuild) {
         const cell = this.getCellAt(mouseX, mouseY);
@@ -331,10 +331,10 @@ export class GameMap {
     }
 
     /**
-     * 获取网格坐标对应的像素中心坐标
-     * @param {number} col - 列索引
-     * @param {number} row - 行索引
-     * @returns {Object} 中心坐标 {x, y}
+     * 
+     * @param {number} col - 
+     * @param {number} row - 
+     * @returns {Object}  {x, y}
      */
     getCellCenter(col, row) {
         return {
@@ -360,14 +360,14 @@ export class GameMap {
 }
 
 /**
- * 预设地图配置
+ * 
  */
 export const MapPresets = {
     /**
-     * 简单直线地图
-     * @param {number} width - 地图宽度
-     * @param {number} height - 地图高度
-     * @returns {Array} 路径点数组
+     * 
+     * @param {number} width - 
+     * @param {number} height - 
+     * @returns {Array} 
      */
     straight(width, height) {
         const margin = 60;
@@ -378,10 +378,10 @@ export const MapPresets = {
     },
 
     /**
-     * Z字形地图
-     * @param {number} width - 地图宽度
-     * @param {number} height - 地图高度
-     * @returns {Array} 路径点数组
+     * Z
+     * @param {number} width - 
+     * @param {number} height - 
+     * @returns {Array} 
      */
     zigzag(width, height) {
         const margin = 60;
@@ -400,10 +400,10 @@ export const MapPresets = {
     },
 
     /**
-     * 螺旋形地图
-     * @param {number} width - 地图宽度
-     * @param {number} height - 地图高度
-     * @returns {Array} 路径点数组
+     * 
+     * @param {number} width - 
+     * @param {number} height - 
+     * @returns {Array} 
      */
     spiral(width, height) {
         const margin = 80;
@@ -424,10 +424,10 @@ export const MapPresets = {
     },
 
     /**
-     * S形地图
-     * @param {number} width - 地图宽度
-     * @param {number} height - 地图高度
-     * @returns {Array} 路径点数组
+     * S
+     * @param {number} width - 
+     * @param {number} height - 
+     * @returns {Array} 
      */
     snake(width, height) {
         const margin = 60;

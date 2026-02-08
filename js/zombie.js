@@ -1,6 +1,6 @@
 /**
  * Zombie Module
- * 处理Zombie Base Class、移动逻辑(沿路径)、Take Damage
+ * Zombie Base Class、()、Take Damage
  */
 
 import { distance, direction } from './utils.js';
@@ -14,29 +14,29 @@ export class Zombie {
         this.y = y;
         this.radius = options.radius || 12;
 
-        // 属性
+        // 
         this.maxHp = options.hp || 100;
         this.hp = this.maxHp;
         this.speed = options.speed || 30;
         this.reward = options.reward || 10;
         this.damage = options.damage || 1;
 
-        // 类型
+        // Class
         this.type = options.type || 'normal';
         this.color = options.color || '#2ecc71';
 
-        // 状态
+        // 
         this.alive = true;
         this.reachedEnd = false;
         this.slowed = false;
         this.slowFactor = 1;
         this.slowDuration = 0;
 
-        // 路径相关
+        // 
         this.pathIndex = 0;
         this.path = [];
 
-        // 动画
+        // 
         this.animFrame = 0;
         this.animSpeed = 0.15;
     }
@@ -48,7 +48,7 @@ export class Zombie {
         this.path = path;
         this.pathIndex = 0;
 
-        // 设置初始位置到路径起点
+        // 
         if (path.length > 0) {
             this.x = path[0].x;
             this.y = path[0].y;
@@ -56,12 +56,12 @@ export class Zombie {
     }
 
     /**
-     * 更新僵尸
+     * Update Zombies
      */
     update(deltaTime, path) {
         if (!this.alive || this.reachedEnd) return;
 
-        // 更新Slow Effect
+        // Slow Effect
         if (this.slowed && this.slowDuration > 0) {
             this.slowDuration -= deltaTime;
             if (this.slowDuration <= 0) {
@@ -70,14 +70,14 @@ export class Zombie {
             }
         }
 
-        // 使用提供的路径或自身存储的路径
+        // 
         const currentPath = path || this.path;
         if (!currentPath || currentPath.length === 0) return;
 
         // Move Along Path
         this.moveAlongPath(deltaTime, currentPath);
 
-        // 更新动画
+        // 
         this.animFrame += this.animSpeed;
     }
 
@@ -93,11 +93,11 @@ export class Zombie {
         const target = path[this.pathIndex + 1];
         const dist = distance(this.x, this.y, target.x, target.y);
 
-        // 计算移动距离
+        // 
         const moveDistance = this.speed * this.slowFactor * (deltaTime / 1000);
 
         if (dist <= moveDistance) {
-            // 到达当前目标点，转向下一个
+            // ，
             this.x = target.x;
             this.y = target.y;
             this.pathIndex++;
@@ -106,7 +106,7 @@ export class Zombie {
                 this.reachedEnd = true;
             }
         } else {
-            // 向目标点移动
+            // 
             const dir = direction(this.x, this.y, target.x, target.y);
             this.x += dir.x * moveDistance;
             this.y += dir.y * moveDistance;
@@ -131,7 +131,7 @@ export class Zombie {
     }
 
     /**
-     * 应用Slow Effect
+     * Slow Effect
      */
     applySlow(factor, duration) {
         this.slowed = true;
@@ -147,14 +147,14 @@ export class Zombie {
     }
 
     /**
-     * 是否到达终点
+     * 
      */
     hasReachedEnd() {
         return this.reachedEnd;
     }
 
     /**
-     * 获取生命值百分比
+     * 
      */
     getHpPercent() {
         return this.hp / this.maxHp;
@@ -168,27 +168,27 @@ export class Zombie {
 
         ctx.save();
 
-        // 绘制阴影
+        // 
         ctx.fillStyle = 'rgba(0, 0, 0, 0.3)';
         ctx.beginPath();
         ctx.ellipse(this.x, this.y + this.radius - 2, this.radius, this.radius * 0.4, 0, 0, Math.PI * 2);
         ctx.fill();
 
-        // 身体摆动动画
+        // 
         const wobble = Math.sin(this.animFrame) * 2;
 
-        // 绘制身体
+        // 
         ctx.fillStyle = this.color;
         ctx.beginPath();
         ctx.arc(this.x + wobble, this.y, this.radius, 0, Math.PI * 2);
         ctx.fill();
 
-        // 绘制边框
+        // 
         ctx.strokeStyle = '#1a1a1a';
         ctx.lineWidth = 2;
         ctx.stroke();
 
-        // 绘制眼睛
+        // 
         const eyeOffset = 4;
         const eyeRadius = 3;
         ctx.fillStyle = '#fff';
@@ -197,7 +197,7 @@ export class Zombie {
         ctx.arc(this.x + eyeOffset + wobble, this.y - 2, eyeRadius, 0, Math.PI * 2);
         ctx.fill();
 
-        // 绘制瞳孔
+        // 
         ctx.fillStyle = '#000';
         ctx.beginPath();
         ctx.arc(this.x - eyeOffset + wobble, this.y - 2, 1.5, 0, Math.PI * 2);
@@ -220,7 +220,7 @@ export class Zombie {
     }
 
     /**
-     * 渲染血条
+     * 
      */
     renderHealthBar(ctx) {
         const barWidth = 24;
@@ -228,11 +228,11 @@ export class Zombie {
         const barX = this.x - barWidth / 2;
         const barY = this.y - this.radius - 10;
 
-        // 背景
+        // 
         ctx.fillStyle = '#333';
         ctx.fillRect(barX, barY, barWidth, barHeight);
 
-        // 血量
+        // 
         const hpPercent = this.getHpPercent();
         let hpColor = '#2ecc71';
         if (hpPercent < 0.3) hpColor = '#e74c3c';
@@ -241,7 +241,7 @@ export class Zombie {
         ctx.fillStyle = hpColor;
         ctx.fillRect(barX, barY, barWidth * hpPercent, barHeight);
 
-        // 边框
+        // 
         ctx.strokeStyle = '#000';
         ctx.lineWidth = 1;
         ctx.strokeRect(barX, barY, barWidth, barHeight);
@@ -335,7 +335,7 @@ export class ZombieFactory {
     }
 
     /**
-     * 根据波次生成僵尸类型
+     * Spawn ZombieClass
      */
     static createForWave(wave, x, y) {
         const types = ['normal'];
@@ -344,7 +344,7 @@ export class ZombieFactory {
         if (wave >= 4) types.push('tank');
         if (wave >= 8 && wave % 5 === 0) types.push('boss');
 
-        // 波次越高，高级僵尸概率越大
+        // ，
         const random = Math.random();
         let selectedType = 'normal';
 

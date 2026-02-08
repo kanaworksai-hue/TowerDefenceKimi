@@ -323,7 +323,7 @@ body {
     display: none !important;
 }
 
-/* 响应式设计 */
+/* Responsive Design */
 @media (max-width: 768px) {
     #game-container {
         aspect-ratio: 4/3;
