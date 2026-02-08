@@ -1,12 +1,12 @@
 /**
  * 子弹/投射物模块
- * 定义子弹基类和各类特殊子弹
+ * 定义Projectile Base Class和各类特殊子弹
  */
 
 import { distance, direction, circleCollision } from './utils.js';
 
 /**
- * 子弹基类
+ * Projectile Base Class
  */
 export class Projectile {
     constructor(x, y, target, config = {}) {
@@ -143,7 +143,7 @@ export class Projectile {
 }
 
 /**
- * 普通子弹
+ * Normal Projectile
  */
 export class NormalProjectile extends Projectile {
     constructor(x, y, target, damage) {
@@ -158,7 +158,7 @@ export class NormalProjectile extends Projectile {
 }
 
 /**
- * 狙击子弹（高速、高伤害）
+ * Sniper Projectile（高速、高伤害）
  */
 export class SniperProjectile extends Projectile {
     constructor(x, y, target, damage) {
@@ -174,7 +174,7 @@ export class SniperProjectile extends Projectile {
     }
 
     checkHit() {
-        // 狙击子弹可以穿透多个目标
+        // Sniper Projectile可以穿透多个目标
         // 这里简化处理，只检查主要目标
         if (!this.target || this.target.isDead || this.hitTargets.has(this.target)) {
             return;
@@ -183,7 +183,7 @@ export class SniperProjectile extends Projectile {
         if (circleCollision(this.x, this.y, this.radius, this.target.x, this.target.y, this.target.radius)) {
             this.onHit(this.target);
             this.hitTargets.add(this.target);
-            // 狙击子弹不立即死亡，继续飞行
+            // Sniper Projectile不立即死亡，继续飞行
         }
     }
 
@@ -192,7 +192,7 @@ export class SniperProjectile extends Projectile {
 
         ctx.save();
 
-        // 狙击子弹有特殊的视觉效果
+        // Sniper Projectile有特殊的视觉效果
         const angle = Math.atan2(this.vy, this.vx);
         const length = 25;
 
@@ -260,7 +260,7 @@ export class RapidProjectile extends Projectile {
 }
 
 /**
- * 溅射子弹（爆炸效果）
+ * Splash Projectile（Explosion Effect）
  */
 export class SplashProjectile extends Projectile {
     constructor(x, y, target, damage, splashRadius = 50) {
@@ -276,9 +276,9 @@ export class SplashProjectile extends Projectile {
     }
 
     onHit(target) {
-        // 触发爆炸效果
+        // 触发Explosion Effect
         this.exploded = true;
-        // 实际伤害在爆炸效果中处理
+        // 实际伤害在Explosion Effect中处理
     }
 
     render(ctx) {
@@ -312,7 +312,7 @@ export class SplashProjectile extends Projectile {
 }
 
 /**
- * 激光子弹（瞬间命中）
+ * Laser Projectile（瞬间命中）
  */
 export class LaserProjectile extends Projectile {
     constructor(x, y, target, damage) {
@@ -369,7 +369,7 @@ export class LaserProjectile extends Projectile {
 }
 
 /**
- * 冰冻子弹（减速效果）
+ * Ice Projectile（减速效果）
  */
 export class IceProjectile extends Projectile {
     constructor(x, y, target, damage, slowFactor = 0.5, slowDuration = 2000) {
@@ -396,7 +396,7 @@ export class IceProjectile extends Projectile {
 
         ctx.save();
 
-        // 冰冻子弹有雪花效果
+        // Ice Projectile有雪花效果
         ctx.fillStyle = this.color;
         ctx.shadowColor = '#3498db';
         ctx.shadowBlur = 8;
@@ -426,7 +426,7 @@ export class IceProjectile extends Projectile {
 }
 
 /**
- * 爆炸效果类
+ * Explosion Effect类
  */
 export class Explosion {
     constructor(x, y, radius, damage, zombies) {
@@ -518,7 +518,7 @@ export class ProjectileFactory {
 
     /**
      * 创建子弹
-     * @param {string} type - 子弹类型
+     * @param {string} type - Projectile Types
      * @param {number} x - 起始x坐标
      * @param {number} y - 起始y坐标
      * @param {Zombie} target - 目标僵尸

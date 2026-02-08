@@ -1,6 +1,6 @@
 /**
- * 游戏主模块
- * Game类，游戏循环(requestAnimationFrame)，状态管理，波次控制
+ * Main Game Module
+ * Game类，Game Loop(requestAnimationFrame)，状态管理，Wave Control
  */
 
 import { GameMap } from './map.js';
@@ -10,7 +10,7 @@ import { Projectile, Explosion } from './projectile.js';
 import { distance } from './utils.js';
 
 /**
- * 游戏状态枚举
+ * Game State枚举
  */
 export const GameState = {
     MENU: 'menu',
@@ -20,44 +20,44 @@ export const GameState = {
 };
 
 /**
- * 游戏主类
+ * Main Game Class
  */
 export class Game {
     constructor(canvas) {
         this.canvas = canvas;
         this.ctx = canvas.getContext('2d');
 
-        // 游戏状态
+        // Game State
         this.state = GameState.MENU;
         this.gameSpeed = 1;
 
-        // 游戏数据
+        // Game Data
         this.money = 500;
         this.lives = 20;
         this.wave = 1;
         this.score = 0;
 
-        // 游戏对象
+        // Game Objects
         this.map = null;
         this.towers = [];
         this.zombies = [];
         this.projectiles = [];
         this.explosions = [];
 
-        // 波次控制
+        // Wave Control
         this.waveInProgress = false;
         this.zombiesToSpawn = [];
         this.spawnTimer = 0;
         this.spawnInterval = 1000;
         this.waveCooldown = 0;
 
-        // 选中状态
+        // Selection State
         this.selectedTowerType = null;
         this.selectedTower = null;
         this.mouseX = 0;
         this.mouseY = 0;
 
-        // 游戏循环
+        // Game Loop
         this.lastTime = 0;
         this.animationId = null;
 
@@ -66,7 +66,7 @@ export class Game {
     }
 
     /**
-     * 初始化游戏
+     * Initialize Game
      */
     init() {
         // 设置画布大小
@@ -79,22 +79,22 @@ export class Game {
         const pathPoints = this.generatePath();
         this.map.setPath(pathPoints);
 
-        // 绑定事件
+        // Bind Events
         this.bindEvents();
 
-        // 开始游戏循环
+        // 开始Game Loop
         this.start();
     }
 
     /**
-     * 生成路径点
+     * Generate Path Points
      */
     generatePath() {
         const margin = 60;
         const w = this.canvas.width;
         const h = this.canvas.height;
 
-        // S形路径
+        // S-Shaped Path
         return [
             { x: margin, y: h * 0.2 },
             { x: w * 0.3, y: h * 0.2 },
@@ -106,7 +106,7 @@ export class Game {
     }
 
     /**
-     * 调整画布大小
+     * Resize Canvas
      */
     resize() {
         const container = this.canvas.parentElement;
@@ -122,17 +122,17 @@ export class Game {
     }
 
     /**
-     * 绑定事件
+     * Bind Events
      */
     bindEvents() {
-        // 鼠标移动
+        // Mouse Move
         this.canvas.addEventListener('mousemove', (e) => {
             const rect = this.canvas.getBoundingClientRect();
             this.mouseX = e.clientX - rect.left;
             this.mouseY = e.clientY - rect.top;
         });
 
-        // 鼠标点击
+        // Mouse Click
         this.canvas.addEventListener('click', (e) => {
             const rect = this.canvas.getBoundingClientRect();
             const x = e.clientX - rect.left;
@@ -140,19 +140,19 @@ export class Game {
             this.handleClick(x, y);
         });
 
-        // 窗口大小改变
+        // Window Resize
         window.addEventListener('resize', () => {
             this.resize();
         });
     }
 
     /**
-     * 处理点击事件
+     * Handle Click Event
      */
     handleClick(x, y) {
         if (this.state !== GameState.PLAYING) return;
 
-        // 检查是否点击了防御塔
+        // Check if Tower Clicked
         const clickedTower = this.towers.find(t =>
             distance(x, y, t.x, t.y) < t.radius
         );
@@ -163,7 +163,7 @@ export class Game {
             return;
         }
 
-        // 建造防御塔
+        // Build Tower
         if (this.selectedTowerType) {
             this.tryBuildTower(x, y);
         } else {
@@ -173,7 +173,7 @@ export class Game {
     }
 
     /**
-     * 尝试建造防御塔
+     * 尝试Build Tower
      */
     tryBuildTower(x, y) {
         const cell = this.map.getCellAt(x, y);
@@ -186,38 +186,38 @@ export class Game {
             return false;
         }
 
-        // 扣除金币
+        // Deduct Gold
         this.money -= towerInfo.cost;
         this.onMoneyChanged?.(this.money);
 
-        // 创建防御塔
+        // Create Tower
         const tower = TowerFactory.create(this.selectedTowerType, cell.x, cell.y);
         this.towers.push(tower);
 
-        // 标记网格
+        // Mark Grid
         this.map.placeTower(cell.col, cell.row, tower);
 
-        // 播放建造音效
+        // Play Build Sound
         this.onTowerBuilt?.(tower);
 
         return true;
     }
 
     /**
-     * 出售防御塔
+     * Sell Tower
      */
     sellTower(tower) {
         const index = this.towers.indexOf(tower);
         if (index === -1) return false;
 
-        // 返还金币
+        // Refund Gold
         this.money += tower.sellValue;
         this.onMoneyChanged?.(this.money);
 
-        // 移除防御塔
+        // Remove Tower
         this.towers.splice(index, 1);
 
-        // 清除网格标记
+        // Clear Grid Mark
         const cell = this.map.getCellAt(tower.x, tower.y);
         if (cell) {
             this.map.removeTower(cell.col, cell.row);
@@ -230,11 +230,11 @@ export class Game {
     }
 
     /**
-     * 升级防御塔
+     * Upgrade Tower
      */
     upgradeTower(tower) {
         if (this.money < tower.upgradeCost) {
-            return { success: false, message: '金币不足' };
+            return { success: false, message: 'Insufficient Gold' };
         }
 
         const result = tower.upgrade();
@@ -248,7 +248,7 @@ export class Game {
     }
 
     /**
-     * 选择防御塔类型
+     * Select Tower Type
      */
     selectTowerType(type) {
         this.selectedTowerType = type;
@@ -257,7 +257,7 @@ export class Game {
     }
 
     /**
-     * 开始波次
+     * Start Wave
      */
     startWave() {
         if (this.waveInProgress) return false;
@@ -273,7 +273,7 @@ export class Game {
     }
 
     /**
-     * 生成波次
+     * Generate Wave
      */
     generateWave(wave) {
         const zombies = [];
@@ -286,7 +286,7 @@ export class Game {
             });
         }
 
-        // Boss波
+        // Boss Wave
         if (wave % 5 === 0) {
             zombies.push({
                 type: 'boss',
@@ -298,7 +298,7 @@ export class Game {
     }
 
     /**
-     * 根据波次获取僵尸类型
+     * Get Zombie Type for Wave
      */
     getZombieTypeForWave(wave) {
         const rand = Math.random();
@@ -311,7 +311,7 @@ export class Game {
     }
 
     /**
-     * 生成僵尸
+     * Spawn Zombie
      */
     spawnZombie(type) {
         const startPoint = this.map.startPoint;
@@ -323,14 +323,14 @@ export class Game {
     }
 
     /**
-     * 设置游戏速度
+     * Set Game Speed
      */
     setGameSpeed(speed) {
         this.gameSpeed = speed;
     }
 
     /**
-     * 暂停/继续游戏
+     * Toggle Pause
      */
     togglePause() {
         if (this.state === GameState.PLAYING) {
@@ -342,7 +342,7 @@ export class Game {
     }
 
     /**
-     * 开始游戏
+     * Start Game
      */
     start() {
         this.state = GameState.PLAYING;
@@ -351,48 +351,48 @@ export class Game {
     }
 
     /**
-     * 重新开始
+     * Restart
      */
     restart() {
-        // 重置游戏数据
+        // 重置Game Data
         this.money = 500;
         this.lives = 20;
         this.wave = 1;
         this.score = 0;
 
-        // 清空游戏对象
+        // 清空Game Objects
         this.towers = [];
         this.zombies = [];
         this.projectiles = [];
         this.explosions = [];
 
-        // 重置波次
+        // Reset Wave
         this.waveInProgress = false;
         this.zombiesToSpawn = [];
 
-        // 重置选中
+        // Reset Selection
         this.selectedTower = null;
         this.selectedTowerType = null;
 
-        // 重置地图
+        // Reset Map
         this.map.reset();
 
-        // 重新生成路径
+        // Regenerate Path
         const pathPoints = this.generatePath();
         this.map.setPath(pathPoints);
 
-        // 更新UI
+        // Update UI
         this.onMoneyChanged?.(this.money);
         this.onLivesChanged?.(this.lives);
         this.onWaveChanged?.(this.wave);
         this.onScoreChanged?.(this.score);
 
-        // 开始游戏
+        // Start Game
         this.state = GameState.PLAYING;
     }
 
     /**
-     * 游戏结束
+     * Game Over
      */
     gameOver() {
         this.state = GameState.GAME_OVER;
@@ -400,7 +400,7 @@ export class Game {
     }
 
     /**
-     * 游戏主循环
+     * Main Game Loop
      */
     gameLoop() {
         const currentTime = performance.now();
@@ -417,35 +417,35 @@ export class Game {
     }
 
     /**
-     * 更新游戏逻辑
+     * Update Game Logic
      */
     update(deltaTime, currentTime) {
-        // 更新波次
+        // Update Wave
         this.updateWave(deltaTime);
 
-        // 更新防御塔
+        // Update Towers
         this.updateTowers(deltaTime, currentTime);
 
-        // 更新僵尸
+        // Update Zombies
         this.updateZombies(deltaTime);
 
-        // 更新投射物
+        // Update Projectiles
         this.updateProjectiles(deltaTime);
 
-        // 更新爆炸效果
+        // Update Explosions
         this.updateExplosions(deltaTime);
 
-        // 清理死亡对象
+        // Cleanup Dead Objects
         this.cleanup();
     }
 
     /**
-     * 更新波次
+     * Update Wave
      */
     updateWave(deltaTime) {
         if (!this.waveInProgress) return;
 
-        // 生成僵尸
+        // Spawn Zombie
         this.spawnTimer += deltaTime;
 
         while (this.zombiesToSpawn.length > 0 &&
@@ -455,7 +455,7 @@ export class Game {
             this.spawnTimer = 0;
         }
 
-        // 检查波次结束
+        // Check Wave End
         if (this.zombiesToSpawn.length === 0 &&
             this.zombies.filter(z => z.isAlive()).length === 0) {
             this.waveInProgress = false;
@@ -463,7 +463,7 @@ export class Game {
             this.onWaveChanged?.(this.wave);
             this.onWaveCompleted?.(this.wave - 1);
 
-            // 波次奖励
+            // Wave Reward
             const waveReward = 50 + this.wave * 10;
             this.money += waveReward;
             this.onMoneyChanged?.(this.money);
@@ -471,7 +471,7 @@ export class Game {
     }
 
     /**
-     * 更新防御塔
+     * Update Towers
      */
     updateTowers(deltaTime, currentTime) {
         const aliveZombies = this.zombies.filter(z => z.isAlive());
@@ -485,13 +485,13 @@ export class Game {
     }
 
     /**
-     * 更新僵尸
+     * Update Zombies
      */
     updateZombies(deltaTime) {
         for (const zombie of this.zombies) {
             zombie.update(deltaTime, this.map.path);
 
-            // 检查是否到达终点
+            // Check if Reached End
             if (zombie.hasReachedEnd() && zombie.isAlive()) {
                 zombie.alive = false;
                 this.lives -= zombie.damage;
@@ -505,7 +505,7 @@ export class Game {
     }
 
     /**
-     * 更新投射物
+     * Update Projectiles
      */
     updateProjectiles(deltaTime) {
         const aliveZombies = this.zombies.filter(z => z.isAlive());
@@ -513,11 +513,11 @@ export class Game {
         for (const projectile of this.projectiles) {
             projectile.update(deltaTime);
 
-            // 检查命中
+            // Check Hit
             const hit = projectile.checkHit(aliveZombies);
             if (hit) {
                 if (Array.isArray(hit)) {
-                    // 穿透子弹命中多个目标
+                    // Penetrating Bullet Hits Multiple
                     for (const zombie of hit) {
                         const reward = zombie.takeDamage(projectile.damage);
                         if (reward > 0) {
@@ -525,13 +525,13 @@ export class Game {
                         }
                     }
                 } else {
-                    // 普通子弹命中单个目标
+                    // Normal Bullet Hits Single
                     const reward = hit.takeDamage(projectile.damage);
                     if (reward > 0) {
                         this.addReward(reward);
                     }
 
-                    // 检查溅射
+                    // Check Splash
                     if (projectile.splashRadius > 0) {
                         this.createExplosion(
                             projectile.x,
@@ -546,7 +546,7 @@ export class Game {
     }
 
     /**
-     * 创建爆炸
+     * Create Explosion
      */
     createExplosion(x, y, radius, damage) {
         const explosion = new Explosion(x, y, radius, damage, this.zombies);
@@ -554,7 +554,7 @@ export class Game {
     }
 
     /**
-     * 更新爆炸效果
+     * Update Explosions
      */
     updateExplosions(deltaTime) {
         for (const explosion of this.explosions) {
@@ -563,7 +563,7 @@ export class Game {
     }
 
     /**
-     * 添加奖励
+     * Add Reward
      */
     addReward(reward) {
         this.money += reward;
@@ -573,7 +573,7 @@ export class Game {
     }
 
     /**
-     * 清理死亡对象
+     * Cleanup Dead Objects
      */
     cleanup() {
         this.zombies = this.zombies.filter(z => z.isAlive() || !z.hasReachedEnd());
@@ -582,54 +582,54 @@ export class Game {
     }
 
     /**
-     * 渲染游戏
+     * Render Game
      */
     render() {
-        // 清空画布
+        // Clear Canvas
         this.ctx.fillStyle = '#0f0f23';
         this.ctx.fillRect(0, 0, this.canvas.width, this.canvas.height);
 
-        // 绘制地图
+        // Draw Map
         this.map.render(this.ctx);
 
-        // 绘制建造预览
+        // Draw Build Preview
         if (this.selectedTowerType && !this.selectedTower) {
             this.renderBuildPreview();
         }
 
-        // 绘制防御塔范围
+        // Draw Tower Range
         if (this.selectedTower) {
             this.selectedTower.renderRange(this.ctx);
         }
 
-        // 绘制防御塔
+        // Draw Towers
         for (const tower of this.towers) {
             tower.render(this.ctx);
         }
 
-        // 绘制僵尸
+        // Draw Zombies
         for (const zombie of this.zombies) {
             zombie.render(this.ctx);
         }
 
-        // 绘制投射物
+        // Draw Projectiles
         for (const projectile of this.projectiles) {
             projectile.render(this.ctx);
         }
 
-        // 绘制爆炸效果
+        // Draw Explosions
         for (const explosion of this.explosions) {
             explosion.render(this.ctx);
         }
 
-        // 绘制暂停遮罩
+        // Draw Pause Overlay
         if (this.state === GameState.PAUSED) {
             this.renderPauseOverlay();
         }
     }
 
     /**
-     * 绘制建造预览
+     * Draw Build Preview
      */
     renderBuildPreview() {
         const cell = this.map.getCellAt(this.mouseX, this.mouseY);
@@ -637,7 +637,7 @@ export class Game {
 
         const canBuild = this.map.canBuildAt(this.mouseX, this.mouseY);
 
-        // 绘制范围预览
+        // Draw Range Preview
         const towerInfo = TowerFactory.getTowerInfo(this.selectedTowerType);
         const range = this.getTowerRange(this.selectedTowerType);
 
@@ -649,12 +649,12 @@ export class Game {
         this.ctx.fill();
         this.ctx.stroke();
 
-        // 绘制高亮
+        // Draw Highlight
         this.map.renderBuildHighlight(this.ctx, this.mouseX, this.mouseY, canBuild);
     }
 
     /**
-     * 获取防御塔射程
+     * Get Tower Range
      */
     getTowerRange(type) {
         const ranges = {
@@ -667,7 +667,7 @@ export class Game {
     }
 
     /**
-     * 绘制暂停遮罩
+     * Draw Pause Overlay
      */
     renderPauseOverlay() {
         this.ctx.fillStyle = 'rgba(0, 0, 0, 0.5)';
@@ -677,11 +677,11 @@ export class Game {
         this.ctx.font = 'bold 48px Arial';
         this.ctx.textAlign = 'center';
         this.ctx.textBaseline = 'middle';
-        this.ctx.fillText('暂停', this.canvas.width / 2, this.canvas.height / 2);
+        this.ctx.fillText('Paused', this.canvas.width / 2, this.canvas.height / 2);
     }
 
     /**
-     * 销毁游戏
+     * Destroy Game
      */
     destroy() {
         if (this.animationId) {

@@ -1,12 +1,12 @@
 /**
- * 游戏入口模块
- * 初始化，事件绑定
+ * Game Entry Module
+ * Initialization and Event Binding
  */
 
 import { Game, GameState } from './game.js';
 
 /**
- * 游戏应用类
+ * Game Application Class
  */
 class GameApp {
     constructor() {
@@ -45,7 +45,7 @@ class GameApp {
     }
 
     /**
-     * 初始化应用
+     * Initialize Application
      */
     init() {
         // 创建游戏实例
@@ -54,7 +54,7 @@ class GameApp {
         // 绑定游戏事件回调
         this.bindGameCallbacks();
 
-        // 绑定UI事件
+        // Bind UI Events
         this.bindUIEvents();
 
         // 初始化UI状态
@@ -128,7 +128,7 @@ class GameApp {
     }
 
     /**
-     * 绑定UI事件
+     * Bind UI Events
      */
     bindUIEvents() {
         // 防御塔选择按钮
@@ -139,7 +139,7 @@ class GameApp {
             });
         });
 
-        // 开始波次按钮
+        // Start Wave Button
         this.ui.startWaveBtn.addEventListener('click', () => {
             this.game.startWave();
         });
@@ -175,7 +175,7 @@ class GameApp {
             }
         });
 
-        // 关闭升级面板按钮
+        // Close Upgrade Panel按钮
         this.ui.closeUpgradeBtn.addEventListener('click', () => {
             this.game.selectedTower = null;
             this.hideUpgradePanel();
@@ -248,7 +248,7 @@ class GameApp {
     }
 
     /**
-     * 显示升级面板
+     * Show Upgrade Panel
      */
     showUpgradePanel(tower) {
         this.ui.towerLevel.textContent = tower.level;
@@ -270,7 +270,7 @@ class GameApp {
     }
 
     /**
-     * 隐藏升级面板
+     * Hide Upgrade Panel
      */
     hideUpgradePanel() {
         this.ui.upgradePanel.classList.add('hidden');

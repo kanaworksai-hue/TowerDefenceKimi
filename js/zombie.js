@@ -1,12 +1,12 @@
 /**
- * 僵尸模块
- * 处理僵尸基类、移动逻辑(沿路径)、受到伤害
+ * Zombie Module
+ * 处理Zombie Base Class、移动逻辑(沿路径)、Take Damage
  */
 
 import { distance, direction } from './utils.js';
 
 /**
- * 僵尸基类
+ * Zombie Base Class
  */
 export class Zombie {
     constructor(x, y, options = {}) {
@@ -42,7 +42,7 @@ export class Zombie {
     }
 
     /**
-     * 设置路径
+     * Set Path
      */
     setPath(path) {
         this.path = path;
@@ -61,7 +61,7 @@ export class Zombie {
     update(deltaTime, path) {
         if (!this.alive || this.reachedEnd) return;
 
-        // 更新减速效果
+        // 更新Slow Effect
         if (this.slowed && this.slowDuration > 0) {
             this.slowDuration -= deltaTime;
             if (this.slowDuration <= 0) {
@@ -74,7 +74,7 @@ export class Zombie {
         const currentPath = path || this.path;
         if (!currentPath || currentPath.length === 0) return;
 
-        // 沿路径移动
+        // Move Along Path
         this.moveAlongPath(deltaTime, currentPath);
 
         // 更新动画
@@ -82,7 +82,7 @@ export class Zombie {
     }
 
     /**
-     * 沿路径移动
+     * Move Along Path
      */
     moveAlongPath(deltaTime, path) {
         if (this.pathIndex >= path.length - 1) {
@@ -114,7 +114,7 @@ export class Zombie {
     }
 
     /**
-     * 受到伤害
+     * Take Damage
      */
     takeDamage(damage) {
         if (!this.alive) return 0;
@@ -131,7 +131,7 @@ export class Zombie {
     }
 
     /**
-     * 应用减速效果
+     * 应用Slow Effect
      */
     applySlow(factor, duration) {
         this.slowed = true;
@@ -140,7 +140,7 @@ export class Zombie {
     }
 
     /**
-     * 是否存活
+     * Is Alive
      */
     isAlive() {
         return this.alive;
@@ -161,7 +161,7 @@ export class Zombie {
     }
 
     /**
-     * 渲染僵尸
+     * Render Zombie
      */
     render(ctx) {
         if (!this.alive) return;
@@ -204,7 +204,7 @@ export class Zombie {
         ctx.arc(this.x + eyeOffset + wobble, this.y - 2, 1.5, 0, Math.PI * 2);
         ctx.fill();
 
-        // 减速效果
+        // Slow Effect
         if (this.slowed) {
             ctx.strokeStyle = '#3498db';
             ctx.lineWidth = 2;
@@ -213,7 +213,7 @@ export class Zombie {
             ctx.stroke();
         }
 
-        // 绘制血条
+        // Draw Health Bar
         this.renderHealthBar(ctx);
 
         ctx.restore();
@@ -249,7 +249,7 @@ export class Zombie {
 }
 
 /**
- * 普通僵尸
+ * Normal Zombie
  */
 export class NormalZombie extends Zombie {
     constructor(x, y) {
@@ -265,7 +265,7 @@ export class NormalZombie extends Zombie {
 }
 
 /**
- * 快速僵尸
+ * Fast Zombie
  */
 export class FastZombie extends Zombie {
     constructor(x, y) {
@@ -282,7 +282,7 @@ export class FastZombie extends Zombie {
 }
 
 /**
- * 坦克僵尸
+ * Tank Zombie
  */
 export class TankZombie extends Zombie {
     constructor(x, y) {
@@ -299,7 +299,7 @@ export class TankZombie extends Zombie {
 }
 
 /**
- * Boss僵尸
+ * Boss Zombie
  */
 export class BossZombie extends Zombie {
     constructor(x, y) {
@@ -316,7 +316,7 @@ export class BossZombie extends Zombie {
 }
 
 /**
- * 僵尸工厂
+ * Zombie Factory
  */
 export class ZombieFactory {
     static create(type, x, y) {

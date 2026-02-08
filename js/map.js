@@ -1,10 +1,10 @@
 /**
- * 地图模块
- * 负责网格系统、路径管理和可建造区域判断
+ * Map Module
+ * 负责Grid System、Path Management和可建造区域判断
  */
 
 /**
- * 地图类
+ * Map Class
  * 管理游戏地图的所有信息
  */
 export class GameMap {
@@ -15,7 +15,7 @@ export class GameMap {
         this.cols = Math.ceil(width / tileSize);
         this.rows = Math.ceil(height / tileSize);
 
-        // 初始化网格
+        // Initialize Grid
         this.grid = [];
         for (let row = 0; row < this.rows; row++) {
             this.grid[row] = [];
@@ -33,13 +33,13 @@ export class GameMap {
 
         // 路径点数组
         this.path = [];
-        // 起点和终点
+        // Start和End
         this.startPoint = null;
         this.endPoint = null;
     }
 
     /**
-     * 设置路径
+     * Set Path
      * @param {Array} pathPoints - 路径点数组 [{x, y}, ...]
      */
     setPath(pathPoints) {
@@ -57,8 +57,8 @@ export class GameMap {
 
     /**
      * 标记路径线段经过的网格
-     * @param {Object} start - 起点 {x, y}
-     * @param {Object} end - 终点 {x, y}
+     * @param {Object} start - Start {x, y}
+     * @param {Object} end - End {x, y}
      */
     markPathLine(start, end) {
         const startCol = Math.floor(start.x / this.tileSize);
@@ -143,7 +143,7 @@ export class GameMap {
     }
 
     /**
-     * 在指定位置放置防御塔
+     * 在指定位置Place Tower
      * @param {number} col - 列索引
      * @param {number} row - 行索引
      * @param {Tower} tower - 防御塔实例
@@ -226,7 +226,7 @@ export class GameMap {
      * @param {CanvasRenderingContext2D} ctx - Canvas上下文
      */
     render(ctx) {
-        // 绘制网格背景
+        // Draw Grid背景
         ctx.strokeStyle = 'rgba(255, 255, 255, 0.05)';
         ctx.lineWidth = 1;
 
@@ -244,7 +244,7 @@ export class GameMap {
             ctx.stroke();
         }
 
-        // 绘制路径
+        // Draw Path
         if (this.path.length > 0) {
             ctx.strokeStyle = '#8B4513';
             ctx.lineWidth = this.tileSize * 0.6;
@@ -258,7 +258,7 @@ export class GameMap {
             }
             ctx.stroke();
 
-            // 绘制路径边框
+            // Draw Path边框
             ctx.strokeStyle = '#654321';
             ctx.lineWidth = this.tileSize * 0.7;
             ctx.globalCompositeOperation = 'destination-over';
@@ -271,19 +271,19 @@ export class GameMap {
             ctx.globalCompositeOperation = 'source-over';
         }
 
-        // 绘制起点
+        // 绘制Start
         if (this.startPoint) {
-            this.drawPoint(ctx, this.startPoint, '#00ff00', '起点');
+            this.drawPoint(ctx, this.startPoint, '#00ff00', 'Start');
         }
 
-        // 绘制终点
+        // 绘制End
         if (this.endPoint) {
-            this.drawPoint(ctx, this.endPoint, '#ff0000', '终点');
+            this.drawPoint(ctx, this.endPoint, '#ff0000', 'End');
         }
     }
 
     /**
-     * 绘制路径点标记
+     * Draw Path点标记
      * @param {CanvasRenderingContext2D} ctx - Canvas上下文
      * @param {Object} point - 点坐标
      * @param {string} color - 颜色
@@ -344,7 +344,7 @@ export class GameMap {
     }
 
     /**
-     * 重置地图
+     * Reset Map
      */
     reset() {
         for (let row = 0; row < this.rows; row++) {

@@ -1,6 +1,6 @@
 /**
  * 工具函数模块
- * 包含数学计算、碰撞检测等通用功能
+ * 包含Math Calculations、Collision Detection等通用功能
  */
 
 /**
@@ -114,7 +114,7 @@ export function normalizeAngle(rad) {
 }
 
 /**
- * 线性插值
+ * Linear Interpolation
  * @param {number} start - 起始值
  * @param {number} end - 结束值
  * @param {number} t - 插值因子(0-1)
@@ -188,7 +188,7 @@ export function formatNumber(num) {
 }
 
 /**
- * 颜色工具函数
+ * Color Utils函数
  */
 export const ColorUtils = {
     /**
@@ -237,7 +237,7 @@ export const ColorUtils = {
 };
 
 /**
- * 缓动函数
+ * Easing Functions
  */
 export const Easing = {
     linear: t => t,
@@ -251,7 +251,7 @@ export const Easing = {
 };
 
 /**
- * 简单的计时器类
+ * 简单的Timer Class
  */
 export class Timer {
     constructor(duration, callback, repeat = false) {
@@ -291,7 +291,7 @@ export class Timer {
 }
 
 /**
- * 对象池类，用于优化性能
+ * Object Pool类，用于优化性能
  */
 export class ObjectPool {
     constructor(factory, resetFn, initialSize = 10) {

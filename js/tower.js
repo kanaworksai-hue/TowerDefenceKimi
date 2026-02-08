@@ -1,13 +1,13 @@
 /**
- * 防御塔模块
- * Tower基类，各塔类型子类，射击逻辑，升级系统
+ * Tower Module
+ * Tower基类，各塔类型子类，Shooting Logic，Upgrade System
  */
 
 import { distance, angle } from './utils.js';
 import { ProjectileFactory } from './projectile.js';
 
 /**
- * 防御塔基类
+ * Tower Base Class
  */
 export class Tower {
     constructor(x, y, options = {}) {
@@ -17,7 +17,7 @@ export class Tower {
 
         // 基础属性
         this.type = options.type || 'basic';
-        this.name = options.name || '基础塔';
+        this.name = options.name || 'Basic Tower';
         this.level = 1;
         this.maxLevel = options.maxLevel || 3;
 
@@ -56,14 +56,14 @@ export class Tower {
             if (this.recoil < 0) this.recoil = 0;
         }
 
-        // 寻找目标
+        // Find Target
         this.findTarget(zombies);
 
         // 瞄准目标
         if (this.target && this.target.isAlive()) {
             this.barrelAngle = angle(this.x, this.y, this.target.x, this.target.y);
 
-            // 尝试射击
+            // 尝试Shoot
             if (currentTime - this.lastFireTime >= this.fireRate) {
                 return this.fire(currentTime);
             }
@@ -73,7 +73,7 @@ export class Tower {
     }
 
     /**
-     * 寻找目标
+     * Find Target
      */
     findTarget(zombies) {
         // 当前目标仍然有效且在范围内
@@ -125,7 +125,7 @@ export class Tower {
     }
 
     /**
-     * 升级防御塔
+     * Upgrade防御塔
      */
     upgrade() {
         if (this.level >= this.maxLevel) {
@@ -139,7 +139,7 @@ export class Tower {
         this.range = Math.floor(this.range * 1.1);
         this.fireRate = Math.max(200, this.fireRate * 0.9);
 
-        // 更新升级和出售价格
+        // 更新Upgrade和出售价格
         this.upgradeCost = Math.floor(this.upgradeCost * 1.5);
         this.sellValue = Math.floor(this.sellValue * 1.3);
 
@@ -147,7 +147,7 @@ export class Tower {
     }
 
     /**
-     * 获取升级后的属性预览
+     * 获取Upgrade后的属性预览
      */
     getUpgradePreview() {
         if (this.level >= this.maxLevel) {
@@ -164,7 +164,7 @@ export class Tower {
     }
 
     /**
-     * 渲染防御塔
+     * Render Tower
      */
     render(ctx) {
         ctx.save();
@@ -233,7 +233,7 @@ export class Tower {
     }
 
     /**
-     * 渲染射程范围（用于建造预览）
+     * Render Range范围（用于建造预览）
      */
     renderRange(ctx) {
         ctx.save();
@@ -249,13 +249,13 @@ export class Tower {
 }
 
 /**
- * 基础塔
+ * Basic Tower
  */
 export class BasicTower extends Tower {
     constructor(x, y) {
         super(x, y, {
             type: 'basic',
-            name: '基础塔',
+            name: 'Basic Tower',
             damage: 15,
             range: 150,
             fireRate: 1000,
@@ -269,13 +269,13 @@ export class BasicTower extends Tower {
 }
 
 /**
- * 狙击塔
+ * Sniper Tower
  */
 export class SniperTower extends Tower {
     constructor(x, y) {
         super(x, y, {
             type: 'sniper',
-            name: '狙击塔',
+            name: 'Sniper Tower',
             damage: 80,
             range: 350,
             fireRate: 2500,
@@ -289,13 +289,13 @@ export class SniperTower extends Tower {
 }
 
 /**
- * 速射塔
+ * Rapid Tower
  */
 export class RapidTower extends Tower {
     constructor(x, y) {
         super(x, y, {
             type: 'rapid',
-            name: '速射塔',
+            name: 'Rapid Tower',
             damage: 8,
             range: 120,
             fireRate: 200,
@@ -309,13 +309,13 @@ export class RapidTower extends Tower {
 }
 
 /**
- * 溅射塔
+ * Splash Tower
  */
 export class SplashTower extends Tower {
     constructor(x, y) {
         super(x, y, {
             type: 'splash',
-            name: '溅射塔',
+            name: 'Splash Tower',
             damage: 30,
             range: 180,
             fireRate: 1500,
@@ -329,7 +329,7 @@ export class SplashTower extends Tower {
 }
 
 /**
- * 防御塔工厂
+ * Tower Factory
  */
 export class TowerFactory {
     static types = {
@@ -349,10 +349,10 @@ export class TowerFactory {
 
     static getTowerInfo(type) {
         const infos = {
-            basic: { name: '基础塔', cost: 100, description: '平衡的攻防能力' },
-            sniper: { name: '狙击塔', cost: 250, description: '超远射程，高伤害' },
-            rapid: { name: '速射塔', cost: 200, description: '极快射速' },
-            splash: { name: '溅射塔', cost: 350, description: '范围伤害' }
+            basic: { name: 'Basic Tower', cost: 100, description: '平衡的攻防能力' },
+            sniper: { name: 'Sniper Tower', cost: 250, description: '超远射程，高伤害' },
+            rapid: { name: 'Rapid Tower', cost: 200, description: '极快射速' },
+            splash: { name: 'Splash Tower', cost: 350, description: '范围伤害' }
         };
         return infos[type] || infos.basic;
     }
