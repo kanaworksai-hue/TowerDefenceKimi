@@ -1,0 +1,26 @@
+# GitHub Pages Configuration
+title: 僵尸塔防游戏
+description: 一款基于Web的策略塔防游戏，抵御僵尸入侵！
+url: ""
+baseurl: ""
+
+# Build settings
+markdown: kramdown
+highlighter: rouge
+
+# Exclude files from processing
+exclude:
+  - .sass-cache/
+  - .jekyll-cache/
+  - gemfiles/
+  - Gemfile
+  - Gemfile.lock
+  - node_modules/
+  - vendor/bundle/
+  - vendor/cache/
+  - vendor/gems/
+  - vendor/ruby/
+  - "*.gemspec"
+  - README.md
+  - LICENSE
+  - docs/

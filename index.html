@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>塔防游戏</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="game-container">
+        <canvas id="gameCanvas"></canvas>
+        <div id="ui-layer">
+            <div id="top-bar">
+                <div class="stat">
+                    <span class="label">生命:</span>
+                    <span id="lives">20</span>
+                </div>
+                <div class="stat">
+                    <span class="label">金币:</span>
+                    <span id="money">500</span>
+                </div>
+                <div class="stat">
+                    <span class="label">波次:</span>
+                    <span id="wave">1</span>
+                </div>
+                <div class="stat">
+                    <span class="label">得分:</span>
+                    <span id="score">0</span>
+                </div>
+            </div>
+            <div id="tower-panel">
+                <div class="tower-btn" data-type="basic">
+                    <div class="tower-icon basic"></div>
+                    <div class="tower-info">
+                        <span class="name">基础塔</span>
+                        <span class="cost">100金币</span>
+                    </div>
+                </div>
+                <div class="tower-btn" data-type="sniper">
+                    <div class="tower-icon sniper"></div>
+                    <div class="tower-info">
+                        <span class="name">狙击塔</span>
+                        <span class="cost">250金币</span>
+                    </div>
+                </div>
+                <div class="tower-btn" data-type="rapid">
+                    <div class="tower-icon rapid"></div>
+                    <div class="tower-info">
+                        <span class="name">速射塔</span>
+                        <span class="cost">200金币</span>
+                    </div>
+                </div>
+                <div class="tower-btn" data-type="splash">
+                    <div class="tower-icon splash"></div>
+                    <div class="tower-info">
+                        <span class="name">溅射塔</span>
+                        <span class="cost">350金币</span>
+                    </div>
+                </div>
+            </div>
+            <div id="game-controls">
+                <button id="start-wave-btn">开始波次</button>
+                <button id="pause-btn">暂停</button>
+                <button id="speed-btn">1x</button>
+            </div>
+        </div>
+        <div id="tower-upgrade-panel" class="hidden">
+            <h3>升级防御塔</h3>
+            <div id="upgrade-info">
+                <p>当前等级: <span id="tower-level">1</span></p>
+                <p>攻击力: <span id="tower-damage">10</span></p>
+                <p>射程: <span id="tower-range">100</span></p>
+                <p>射速: <span id="tower-speed">1</span></p>
+            </div>
+            <button id="upgrade-btn">升级 (<span id="upgrade-cost">100</span>金币)</button>
+            <button id="sell-btn">出售 (<span id="sell-value">50</span>金币)</button>
+            <button id="close-upgrade-btn">关闭</button>
+        </div>
+        <div id="game-over-modal" class="hidden">
+            <h2>游戏结束</h2>
+            <p>最终得分: <span id="final-score">0</span></p>
+            <p>存活波次: <span id="final-wave">0</span></p>
+            <button id="restart-btn">重新开始</button>
+        </div>
+    </div>
+    <script type="module" src="js/main.js"></script>
+</body>
+</html>
